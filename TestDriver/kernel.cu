@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 	cudaDeviceProp prop;
 	int count;
 	cudaGetDeviceCount(&count);
-	printf("Количество установленных устройств:                                       %d\n", count);
+	printf("Количество установленных устройств:                                                 %d\n", count);
 
 	for (int i = 0; i < count; i++) {
 		cudaGetDeviceProperties(&prop, i);
@@ -17,15 +17,15 @@ int main(int argc, char *argv[])
 		printf("\n");
 		printf("СВЕДЕНИЯ ОБ УСТРОЙСТВЕ %d\n", i);
 		printf("\n");
-		printf("Наименование:                                                             %s\n", prop.name);
-		printf("Поколение (Compute capability):                                           %d.%d\n", prop.major, prop.minor);
-		printf("Тактовая частота в килогерцах:                                            %d\n", prop.clockRate);
-		printf("Количество асинхронных контроллеров DMA:                                  %d\n", prop.asyncEngineCount);
-		printf("Тайм-аут выполнения ядра:                                                 ");
+		printf("Наименование:                                                                       %s\n", prop.name);
+		printf("Поколение (Compute capability):                                                     %d.%d\n", prop.major, prop.minor);
+		printf("Тактовая частота в килогерцах:                                                      %d\n", prop.clockRate);
+		printf("Количество асинхронных контроллеров DMA:                                            %d\n", prop.asyncEngineCount);
+		printf("Тайм-аут выполнения ядра:                                                           ");
 		if (prop.kernelExecTimeoutEnabled) printf("включен\n"); else printf("выключен\n");
-		printf("Устройство GPU интегрировано:                                             ");
+		printf("Устройство GPU интегрировано:                                                       ");
 		if (prop.integrated) printf("да\n"); else printf("нет\n");
-		printf("Режим вычислений:                                                         %d ", prop.computeMode);
+		printf("Режим вычислений:                                                                   %d ", prop.computeMode);
 		switch (prop.computeMode)
 		{
 		case 1:
@@ -40,29 +40,31 @@ int main(int argc, char *argv[])
 		default:
 			printf("(режим вычисления по умолчанию, несколько потоков могут использовать cudaSetDevice())\n", prop.computeMode);
 		}
+		printf("Устройство поддерживает исполнение нескольких ядер одновременно в одном контексте:  ");
+		if (prop.concurrentKernels) printf("да\n"); else printf("нет\n");
 
 
 		printf("\n");
 
 		printf("СВЕДЕНИЯ О ПАМЯТИ УСТРОЙСТВА %d\n", i);
 		printf("\n");
-		printf("Размер глобальной памяти в байтах:                                        %ld\n", prop.totalGlobalMem);
-		printf("Размер константной памяти в байтах:                                       %ld\n", prop.totalConstMem);
-		printf("Максимальный шаг копирования в памяти:                                    %ld\n", prop.memPitch);
-		printf("Выравнивание текстур:                                                     %ld\n", prop.textureAlignment);
-		printf("Возможно отображать память CPU на адресное пространство Cuda-устройства:  ");
+		printf("Размер глобальной памяти в байтах:                                                  %ld\n", prop.totalGlobalMem);
+		printf("Размер константной памяти в байтах:                                                 %ld\n", prop.totalConstMem);
+		printf("Максимальный шаг копирования в памяти:                                              %ld\n", prop.memPitch);
+		printf("Выравнивание текстур:                                                               %ld\n", prop.textureAlignment);
+		printf("Возможно отображать память CPU на адресное пространство Cuda-устройства:            ");
 		if (prop.canMapHostMemory) printf("да\n"); else printf("нет\n");
 		printf("\n");
 
 		printf("СВЕДЕНИЯ О МУЛЬТИПРОЦЕССОРАХ УСТРОЙСТВА %d\n", i);
 		printf("\n");
-		printf("Количество мультипроцессоров:                                             %d\n", prop.multiProcessorCount);
-		printf("Разделяемая память на один мультипроцессор:                               %ld\n", prop.sharedMemPerBlock);
-		printf("Регистров на один мультипроцессор:                                        %d\n", prop.regsPerBlock);
-		printf("Нитей на варп:                                                            %d\n", prop.warpSize);
-		printf("Максимальное количество нитей в блоке:                                    %d\n", prop.maxThreadsPerBlock);
-		printf("Максимальное количество нитей по измерениям:                              (%d, %d, %d)\n", prop.maxThreadsDim[0], prop.maxThreadsDim[1], prop.maxThreadsDim[2]);
-		printf("Максимальные размеры сетки:                                               (%d, %d, %d)\n", prop.maxGridSize[0], prop.maxGridSize[1], prop.maxGridSize[2]);
+		printf("Количество мультипроцессоров:                                                       %d\n", prop.multiProcessorCount);
+		printf("Разделяемая память на один мультипроцессор:                                         %ld\n", prop.sharedMemPerBlock);
+		printf("Регистров на один мультипроцессор:                                                  %d\n", prop.regsPerBlock);
+		printf("Нитей на варп:                                                                      %d\n", prop.warpSize);
+		printf("Максимальное количество нитей в блоке:                                              %d\n", prop.maxThreadsPerBlock);
+		printf("Максимальное количество нитей по измерениям:                                        (%d, %d, %d)\n", prop.maxThreadsDim[0], prop.maxThreadsDim[1], prop.maxThreadsDim[2]);
+		printf("Максимальные размеры сетки:                                                         (%d, %d, %d)\n", prop.maxGridSize[0], prop.maxGridSize[1], prop.maxGridSize[2]);
 		printf("\n");
 
 
@@ -73,9 +75,6 @@ int main(int argc, char *argv[])
 
 
 		//printf("Включена поддержка ECC:  %d\n", prop.ECCEnabled);
-
-			//printf(":  %d\n", prop.concurrentKernels)
-			//Устройство может возможно выполнить несколько ядер одновременно
 
 			//printf(":  %d\n", prop.concurrentManagedAccess)
 			//Устройство может когерентно доступ к управляемой памяти одновременно с процессором
@@ -161,14 +160,8 @@ int main(int argc, char *argv[])
 			//printf(":  %d\n", prop.maxThreadsPerMultiProcessor)
 			//Максимальные потоки резидентов на многопроцессорных
 
-			//size_t cudaDeviceProp::memPitch)
-			//Максимальный шаг в байтах допускаются копия памяти
-
 			//printf(":  %d\n", prop.memoryBusWidth)
 			//Ширина шины Глобальной памяти в битах
-
-			//printf(":  %d\n", prop.memoryClockRate)
-			//Пик тактовая частота памяти в килогерц
 
 			//printf(":  %d\n", prop.multiGpuBoardGroupID)
 			//Уникальный идентификатор для группы устройств на одной и той же мульти - GPU платы
@@ -210,8 +203,6 @@ int main(int argc, char *argv[])
 			//Устройство разделяет единое адресное пространство с хозяином
 
 
-		//printf(":  %d\n", prop.asyncEngineCount);
-		//printf(":  %d\n", prop.concurrentKernels);
 		//printf(":  %d\n", prop.concurrentManagedAccess);
 		//printf(":  %d\n", prop.ECCEnabled);
 		//printf(":  %d\n", prop.globalL1CacheSupported);
@@ -220,6 +211,7 @@ int main(int argc, char *argv[])
 		//printf(":  %d\n", prop.l2CacheSize);
 		//printf(":  %d\n", prop.localL1CacheSupported);
 		//printf(":  %d\n", prop.managedMemory);
+
 		//printf(":  %d\n", prop.maxSurface1D);
 		//printf(":  %d\n", prop.maxSurface1DLayered);
 		//printf(":  %d\n", prop.maxSurface2D);
@@ -227,6 +219,7 @@ int main(int argc, char *argv[])
 		//printf(":  %d\n", prop.maxSurface3D);
 		//printf(":  %d\n", prop.maxSurfaceCubemap);
 		//printf(":  %d\n", prop.maxSurfaceCubemapLayered);
+
 		//printf(":  %d\n", prop.maxTexture1D);
 		//printf(":  %d\n", prop.maxTexture1DLayered);
 		//printf(":  %d\n", prop.maxTexture1DLinear);
@@ -240,10 +233,9 @@ int main(int argc, char *argv[])
 		//printf(":  %d\n", prop.maxTexture3DAlt);
 		//printf(":  %d\n", prop.maxTextureCubemap);
 		//printf(":  %d\n", prop.maxTextureCubemapLayered);
+
 		//printf(":  %d\n", prop.maxThreadsPerMultiProcessor);
 		//printf(":  %d\n", prop.memoryBusWidth);
-		//printf(":  %d\n", prop.memoryClockRate);
-		//printf(":  %d\n", prop.memPitch);
 		//printf(":  %d\n", prop.multiGpuBoardGroupID);
 		//printf(":  %d\n", prop.pageableMemoryAccess);
 		//printf(":  %d\n", prop.pciBusID);
